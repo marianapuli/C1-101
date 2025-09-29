@@ -1,0 +1,161 @@
+---
+title: "worksheets1"
+author: "Marian Apuli"
+date: "2025-09-29"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+# ======================================================
+# Worksheet 1 - CS101 : R Programming
+# ======================================================
+
+# -------------------------
+# Part 1: Vector operations
+# -------------------------
+
+age <- c(25, 30, 18, 22, 45, 60, 32, 27, 28, 31, 29, 26, 33, 41, 22, 37, 50)
+
+# 1. How many data points?
+length(age)
+
+# 2. Minimum and maximum value
+min(age)
+max(age)
+
+# 3. Sorted values
+sort(age)
+
+# 4. Add 61 into the vector
+age <- c(age, 61)
+age
+
+# 5. Add duplicate value (22)
+age <- c(age, 22)
+age
+
+# 6. Smallest and largest value again
+min(age)
+max(age)
+
+# -------------------------
+# Part 2: Another dataset
+# -------------------------
+
+age2 <- c(24, 25, 24, 30, 28, 21, 26, 29, 25, 30, 24, 29, 25, 27)
+
+# Minimum and maximum
+min(age2)
+max(age2)
+
+# Multiply dataset by 2
+age3 <- age2 * 2
+age3
+
+# -------------------------
+# Part 3: Sequences
+# -------------------------
+
+# Integers from 1 to 500
+seq1 <- 1:500
+
+# Multiples of 3 between 1 and 500
+seq3 <- seq(3, 500, by = 3)
+
+# Multiples of 5 between 20 and 500
+seq5 <- seq(20, 500, by = 5)
+
+# Multiples of 4 between 120 and 320
+seq4 <- seq(120, 320, by = 4)
+
+# Sequence from 5 to 50, increment by 5
+seq6 <- seq(5, 50, by = 5)
+
+# Sequence from 1 to 1000, increment by 3
+seq7 <- seq(1, 1000, by = 3)
+
+# Numbers between 1–100 not divisible by 3, 5, 7
+seq8 <- (1:100)[(1:100) %% 3 != 0 & (1:100) %% 5 != 0 & (1:100) %% 7 != 0]
+
+# -------------------------
+# Part 4: Random numbers
+# -------------------------
+
+set.seed(123)   # reproducibility
+sample(1:500, 10)   # 10 random numbers
+
+# -------------------------
+# Part 5: Multiples of 3 or 5 below 25
+# -------------------------
+
+nums <- (1:24)[(1:24) %% 3 == 0 | (1:24) %% 5 == 0]
+nums
+sum(nums)
+
+# -------------------------
+# Part 6: Character vector
+# -------------------------
+
+v <- c("A", "B", "C", "D", "A", "B", "C")
+v
+
+# -------------------------
+# Part 7: Handling NA values
+# -------------------------
+
+x <- c(2, 4, NA, 6, NA, 8)
+x[is.na(x)] <- 0
+x
+
+# -------------------------
+# Part 8: Class of objects
+# -------------------------
+
+y <- c(2.3, 4.5, 6.7)
+class(y)
+
+z <- c("a", "b", "c")
+class(z)
+
+m <- c(TRUE, FALSE, TRUE)
+class(m)
+
+# -------------------------
+# Part 9: Extra examples
+# -------------------------
+
+name <- "Marian Apuli"
+age_num <- 20
+
+print(paste("My name is", name, "and I am", age_num, "years old."))
+
+print(seq(1, 10, by = 2))
+print(sample(1:100, 5))
+
+print(R.version.string)  # R version
+
+install.packages("usethis")
+usethis::use_git_config(user.name="Marian Apuli", user.email="marian.apuli@students.isatu.edu.ph")
