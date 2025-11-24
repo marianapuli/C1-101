@@ -1,0 +1,183 @@
+---
+title: "RWorksheet_Apuli#4b.Rmd"
+author: "Marian Apuli"
+date: "2025-11-24"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# 1. FOR LOOP – 5x5 MATRIX
+
+vectorA <- 1:5
+zeroMatrix <- matrix(0, nrow=5, ncol=5)
+
+for(i in 1:5){
+  for(j in 1:5){
+    zeroMatrix[i,j] <- abs(vectorA[i] - vectorA[j])
+  }
+}
+
+print("5x5 Matrix:")
+print(zeroMatrix)
+
+# 2. PRINT "*" USING FOR LOOP
+
+cat("Printing '*' 5 times:\n")
+for(i in 1:5){
+  cat("*\n")
+}
+
+# 3. FIBONACCI SEQUENCE UP TO 500 (SAFE)
+
+repeat {
+  start <- as.numeric(readline(prompt="Enter starting number: "))
+  if(!is.na(start) && start > 0) break
+  cat("Please enter a valid positive number.\n")
+}
+
+a <- start
+b <- start
+
+cat("Fibonacci sequence up to 500:\n")
+repeat {
+  print(a)
+  c <- a + b
+  a <- b
+  b <- c
+  if(!is.na(a) && a > 500) break
+}
+
+# 4. IMPORT SHOE SIZE DATASET (CSV version)
+
+shoe <- read.csv("shoesizes.csv", header=TRUE)
+head(shoe)
+
+# Subset male and female
+male <- subset(shoe, Gender == "Male")
+female <- subset(shoe, Gender == "Female")
+
+cat("Number of Males:", nrow(male), "\n")
+cat("Number of Females:", nrow(female), "\n")
+
+# Barplot male vs female
+gender_counts <- table(shoe$Gender)
+barplot(gender_counts,
+        main="Gender Distribution",
+        col=c("blue","pink"),
+        xlab="Gender",
+        ylab="Count")
+legend("topright",
+       legend=names(gender_counts),
+       fill=c("blue","pink"))
+
+
+# 5. PIE CHART – DELA CRUZ FAMILY INCOME
+
+expenses <- c(60,10,5,25)
+labels <- c("Food","Electricity","Savings","Misc")
+percent <- round(expenses / sum(expenses) * 100)
+
+pie(expenses,
+    labels=paste(labels, percent, "%"),
+    col=rainbow(4),
+    main="Dela Cruz Monthly Expenses")
+
+
+# 6. IRIS DATASET
+
+data(iris)
+str(iris)
+
+# Mean of numeric columns
+iris_means <- colMeans(iris[,1:4])
+iris_means
+
+# Pie chart of species (presentation-ready)
+species_counts <- table(iris$Species)
+species_labels <- paste(names(species_counts), species_counts, sep=": ")
+
+pie(species_counts,
+    labels = species_labels,
+    col = c("#1b9e77","#d95f02","#7570b3"),
+    main = "Iris Species Distribution",
+    border = "white")
+legend("topright", legend = species_labels,
+       fill = c("#1b9e77","#d95f02","#7570b3"))
+
+# Subset species
+setosa <- subset(iris, Species=="setosa")
+versicolor <- subset(iris, Species=="versicolor")
+virginica <- subset(iris, Species=="virginica")
+
+tail(setosa)
+tail(versicolor)
+tail(virginica)
+
+# Scatterplot Sepal.Length vs Sepal.Width
+iris$Species <- as.factor(iris$Species)
+colors <- c("red","green","blue")[iris$Species]
+
+plot(iris$Sepal.Length, iris$Sepal.Width,
+     col=colors,
+     pch=19,
+     main="Iris Dataset",
+     sub="Sepal Width vs Length",
+     xlab="Sepal Length",
+     ylab="Sepal Width")
+legend("topright",
+       legend=levels(iris$Species),
+       col=c("red","green","blue"),
+       pch=19)
+
+
+# 7. ALEXA VARIATION CLEANING (CSV version)
+
+library(dplyr)
+
+alexa <- read.csv("alexa-file.csv", header=TRUE)
+
+# Clean white and black variants
+alexa$Variations <- gsub("Black ", "Black_", alexa$Variations)
+alexa$Variations <- gsub("White ", "White_", alexa$Variations)
+
+head(alexa)
+
+# Count variations and save RData
+variation_counts <- alexa %>% count(Variations)
+variation_counts
+save(variation_counts, file="variations.RData")
+
+# Barplot of all variations
+barplot(variation_counts$n,
+        names.arg=variation_counts$Variations,
+        col=rainbow(nrow(variation_counts)),
+        las=2,
+        main="Alexa Variation Counts",
+        xlab="Variation",
+        ylab="Count")
+
+# Side-by-side barplot for Black vs White
+black <- subset(alexa, grepl("Black_", Variations))
+white <- subset(alexa, grepl("White_", Variations))
+
+black_count <- table(black$Variations)
+white_count <- table(white$Variations)
+
+# Align variants
+all_variants <- union(names(black_count), names(white_count))
+black_vec <- sapply(all_variants, function(x) ifelse(x %in% names(black_count), black_count[x], 0))
+white_vec <- sapply(all_variants, function(x) ifelse(x %in% names(white_count), white_count[x], 0))
+
+counts_matrix <- rbind(black_vec, white_vec)
+rownames(counts_matrix) <- c("Black Variants","White Variants")
+
+barplot(counts_matrix,
+        beside=TRUE,
+        col=c("black","gray"),
+        legend=rownames(counts_matrix),
+        main="Black vs White Variants",
+        las=2)
+

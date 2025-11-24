@@ -1,0 +1,217 @@
+---
+title: "RWorksheet_Apuli#4b.Rmd"
+author: "Marian Apuli"
+date: "2025-11-24"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+############################################################
+# 1. FOR LOOP – 5×5 MATRIX
+############################################################
+
+vectorA <- 1:5
+zeroMatrix <- matrix(0, nrow = 5, ncol = 5)
+
+for(i in 1:5){
+  for(j in 1:5){
+    zeroMatrix[i, j] <- abs(vectorA[i] - vectorA[j])
+  }
+}
+
+zeroMatrix
+
+############################################################
+# 2. PRINT "*" USING FOR LOOP
+############################################################
+
+for(i in 1:5){
+  print("*")
+}
+
+############################################################
+# 3. FIBONACCI USING REPEAT + BREAK
+############################################################
+
+start <- as.numeric(readline("Enter starting number: "))
+a <- start
+b <- start
+
+repeat {
+  print(a)
+  c <- a + b
+  a <- b
+  b <- c
+  if(a > 500) break
+}
+
+############################################################
+# 4. IMPORT SHOE SIZE DATASET
+############################################################
+
+library(readxl)
+
+shoe <- read_excel("shoesizes.xlsx")
+head(shoe)
+
+############################################################
+# 4B. SUBSETS FOR MALE AND FEMALE
+############################################################
+
+male <- subset(shoe, Gender == "Male")
+female <- subset(shoe, Gender == "Female")
+
+nrow(male)
+nrow(female)
+
+############################################################
+# 4C. BARPLOT OF MALE VS FEMALE
+############################################################
+
+counts <- table(shoe$Gender)
+
+barplot(counts,
+        main = "Distribution of Gender",
+        col = c("blue", "pink"),
+        legend = TRUE,
+        xlab = "Gender",
+        ylab = "Count")
+
+############################################################
+# 5. PIE CHART – DELA CRUZ FAMILY EXPENSES
+############################################################
+
+income <- c(60, 10, 5, 25)
+labels <- c("Food", "Electricity", "Savings", "Misc")
+percent <- round(income / sum(income) * 100)
+
+pie(income,
+    labels = paste(labels, percent, "%"),
+    col = rainbow(4),
+    main = "Dela Cruz Monthly Expenses")
+
+############################################################
+# 6. IRIS DATASET
+############################################################
+
+data(iris)
+r
+Copy code
+# 6A. STRUCTURE
+str(iris)
+r
+Copy code
+# 6B. MEAN OF FOUR MEASUREMENTS
+iris_means <- colMeans(iris[, 1:4])
+iris_means
+r
+Copy code
+# 6C. PIE CHART OF SPECIES DISTRIBUTION
+species_counts <- table(iris$Species)
+
+pie(species_counts,
+    col = rainbow(3),
+    main = "Iris Species Distribution",
+    labels = names(species_counts))
+r
+Copy code
+# 6D. SUBSETS OF EACH SPECIES
+setosa <- subset(iris, Species == "setosa")
+versicolor <- subset(iris, Species == "versicolor")
+virginica <- subset(iris, Species == "virginica")
+
+tail(setosa)
+tail(versicolor)
+tail(virginica)
+r
+Copy code
+# 6E. SCATTERPLOT
+iris$Species <- as.factor(iris$Species)
+
+plot(iris$Sepal.Length, iris$Sepal.Width,
+     col = iris$Species,
+     pch = 19,
+     main = "Iris Dataset",
+     sub = "Sepal Width and Length",
+     xlab = "Sepal Length",
+     ylab = "Sepal Width")
+
+legend("topright",
+       legend = levels(iris$Species),
+       col = 1:3,
+       pch = 19)
+r
+Copy code
+############################################################
+# 7. ALEXA VARIATION CLEANING
+############################################################
+
+library(readxl)
+alexa <- read_excel("alexa-file.xlsx")
+
+# Fix white and black variants
+alexa$Variations <- gsub("Black ", "Black_", alexa$Variations)
+alexa$Variations <- gsub("White ", "White_", alexa$Variations)
+
+head(alexa)
+r
+Copy code
+# 7A. INCLUDE SNIPPET IMAGE (OPTIONAL)
+knitr::include_graphics("D:/RScripts/AlexaSnippet.png")
+r
+Copy code
+############################################################
+# 7B. COUNT VARIATIONS AND SAVE RDATA
+############################################################
+
+library(dplyr)
+
+variation_counts <- alexa %>% count(Variations)
+
+variation_counts
+
+save(variation_counts, file = "variations.RData")
+r
+Copy code
+############################################################
+# 7C. BARPLOT OF ALL VARIATIONS
+############################################################
+
+barplot(variation_counts$n,
+        names.arg = variation_counts$Variations,
+        col = rainbow(nrow(variation_counts)),
+        las = 2,
+        main = "Alexa Variation Counts",
+        xlab = "Variation Type",
+        ylab = "Count")
+r
+Copy code
+############################################################
+# 7D. SIDE-BY-SIDE BARPLOT FOR BLACK & WHITE VARIATIONS
+############################################################
+
+black <- subset(alexa, grepl("Black_", Variations))
+white <- subset(alexa, grepl("White_", Variations))
+
+black_count <- table(black$Variations)
+white_count <- table(white$Variations)
+
+par(mfrow = c(1,2))  # two plots in one frame
+
+barplot(black_count,
+        main = "Black Variations",
+        col = "black",
+        las = 2)
+
+barplot(white_count,
+        main = "White Variations",
+        col = "gray",
+        las = 2)
+
+par(mfrow = c(1,1))  # reset
+
+
+
